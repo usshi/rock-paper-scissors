@@ -1,19 +1,21 @@
 import java.util.Random;
 
-public class rundomNumber {
+public class RandamNumber {
     static final String GU = "グー";
     static final String CHOKI = "チョキ";
     static final String PA = "パー";
+
   public static void main(String[] args) {
 
     String[] hands = {GU, CHOKI, PA};
+    Random r = new Random();
+    Player player3 = new Player();
+    player3.hand = hands[r.nextInt(3)];
 
-    for (int i = 1; i < 2; i++) {
-      //playerをオブジェクトにする
-      Random r = new Random();
+    for (int i = 1; i < 5; i++) {
+      Player.create(i);
       String player1 = hands[r.nextInt(3)];
       String player2 = hands[r.nextInt(3)];
-      String player3 = hands[r.nextInt(3)];
 
       System.out.println(i + "回目の勝負です");
       System.out.println("player1とplayer2でじゃんけんをします。");
