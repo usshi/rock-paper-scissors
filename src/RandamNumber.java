@@ -1,43 +1,64 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RandamNumber {
     static final String GU = "グー";
     static final String CHOKI = "チョキ";
     static final String PA = "パー";
+    static final String[] hands = {GU, CHOKI, PA};
+    static int i = 1;
+    static boolean isDraw = true;
+
 
   public static void main(String[] args) {
 
-    String[] hands = {GU, CHOKI, PA};
-    Random r = new Random();
-    Player player3 = new Player();
-    player3.hand = hands[r.nextInt(3)];
+    List<Player> playerList = new ArrayList<Player>();
+    for (int i = 1; i < 11; i++) {
+      playerList.add(Player.createMemberId(i));
+    }
+    while (isDraw) {
+      jyanken(playerList);
+    }
 
-    for (int i = 1; i < 5; i++) {
-      Player.create(i);
-      String player1 = hands[r.nextInt(3)];
-      String player2 = hands[r.nextInt(3)];
+    for (Player player : playerList) {
+      System.out.println("player" + player.memberId + "の手は" + player.hand);
+    }
+  }
 
-      System.out.println(i + "回目の勝負です");
-      System.out.println("player1とplayer2でじゃんけんをします。");
-      System.out.println("player1の手" + player1);
-      System.out.println("player2の手" + player2);
+  private static void jyanken(List<Player> playerList) {
+    int guCount = 0;
+    int paCount = 0;
+    int chokiCount = 0;
 
-
-      //プレイヤーの人数をnにする
-      //n人の名前はhtml(コンソールから入力でも可)
-
-      //じゃんけんクラスを作る
-      if (player1.equals(GU) && player2.equals(CHOKI)){
-        System.out.println("player1のかちー");
-      } else if (player1.equals(CHOKI) && player2.equals(PA)) {
-        System.out.println("player1のかちー");
-      } else if (player1.equals(PA) && player2.equals(GU)) {
-        System.out.println("player1のかちー");
-      } else if (player1.equals(player2)) {
-        System.out.println("ひきわけ");
-      } else {
-        System.out.println("player2のかちー");
+    System.out.println(i + "回目の勝負です。");
+    i ++;
+    for (Player player : playerList) {
+      Random r = new Random();
+      player.hand = hands[r.nextInt(3)];
+      if (player.hand.equals(GU)) {
+        guCount++;
+      } else if (player.hand.equals(CHOKI)) {
+        chokiCount++;
+      } else if (player.hand.equals(PA)) {
+        paCount++;
       }
+      System.out.println("player" + player.memberId + "の手は" + player.hand);
+    }
+
+    if (guCount > 0 && chokiCount > 0 && paCount > 0) {
+      System.out.println("引き分け");
+    } else if (guCount == playerList.size() || chokiCount == playerList.size() || paCount == playerList.size()) {
+      System.out.println("引き分け");
+    } else if (paCount == 0) {
+      System.out.println(GU + "のかちー");
+      isDraw = false;
+    } else if (guCount == 0) {
+      System.out.println(CHOKI + "のかちー");
+      isDraw = false;
+    } else if (chokiCount == 0) {
+      System.out.println(PA + "のかちー");
+      isDraw = false;
     }
   }
 }
